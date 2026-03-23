@@ -1,0 +1,67 @@
+tasks:
+  - id: "001"
+    status: "pending"
+    slug: "git-branch-cleaner"
+    prompt: |
+      Write a bash script called clean_branches.sh that:
+      - Lists all local git branches that have been merged into main (or master)
+      - Prompts the user to confirm before deleting each one
+      - Skips 'main', 'master', and 'develop' branches unconditionally
+      - Prints a summary at the end: how many branches were deleted vs skipped
+      - Add a --dry-run flag that shows what would be deleted without actually doing it
+      - Add a --yes flag to auto-confirm all deletions (for use in scripts)
+      Output only the script contents, no explanation.
+
+  - id: "002"
+    status: "pending"
+    slug: "disk-usage-reporter"
+    prompt: |
+      Write a Python script called disk_report.py that:
+      - Accepts a target directory as a positional argument (default: $HOME)
+      - Finds the top 10 largest files and top 5 largest directories
+      - Outputs a clean aligned table to stdout with sizes in human-readable form (KB/MB/GB)
+      - Accepts a --report flag to also write a markdown report to disk_report.md
+      - Uses only the Python standard library (os, pathlib, argparse, etc.)
+      Output only the script contents, no explanation.
+
+  - id: "003"
+    status: "pending"
+    slug: "todo-extractor"
+    prompt: |
+      Write a Python script called find_todos.py that:
+      - Recursively scans a directory (default: current dir) for TODO, FIXME, HACK, and XXX comments
+      - Supports --ext flag to filter by file extension (can be specified multiple times, e.g. --ext py --ext js)
+      - Groups results by file and outputs them as a markdown checklist: "- [ ] FILE:LINE: comment"
+      - Supports --output flag to write the checklist to a file instead of stdout
+      - Ignores .git, node_modules, __pycache__, and .venv directories
+      - Uses only the Python standard library
+      Output only the script contents, no explanation.
+
+  - id: "004"
+    status: "pending"
+    slug: "env-snapshot"
+    prompt: |
+      Write a bash script called env_snapshot.sh that:
+      - Captures the current environment: PATH entries (one per line), installed pip packages
+        (pip freeze), npm globals (npm list -g --depth=0), shell aliases (alias command),
+        and the current crontab (crontab -l)
+      - Saves each section to a dated snapshot file at ~/.env-snapshots/YYYY-MM-DD.txt
+      - If a previous snapshot exists, diffs it against the current one and prints only the changes
+      - Creates ~/.env-snapshots/ if it doesn't exist
+      - Handles missing tools gracefully (e.g. if npm is not installed, skip that section)
+      Output only the script contents, no explanation.
+
+  - id: "005"
+    status: "pending"
+    slug: "log-tailer"
+    prompt: |
+      Write a Python script called smart_tail.py that:
+      - Tails a log file in real time (like tail -f) given as a positional argument
+      - Highlights lines containing ERROR in red, WARN/WARNING in yellow, INFO in green,
+        and DEBUG in cyan using ANSI escape codes
+      - Accepts --filter REGEX flag to show only lines matching a pattern
+      - Accepts --since DURATION flag (e.g. --since 5m, --since 1h, --since 30s) to start
+        from a point in the file approximately that old (by seeking from the end)
+      - Handles KeyboardInterrupt gracefully (Ctrl+C exits cleanly)
+      - Uses only the Python standard library
+      Output only the script contents, no explanation.

@@ -1,0 +1,17 @@
+schedule:
+  hour: 2
+  minute: 0
+
+codex:
+  command: "codex"        # the codex CLI binary name on your PATH
+  model: "o4-mini"        # passed as --model flag
+  timeout_seconds: 300    # kill codex if it hangs
+
+paths:
+  tools_dir: "tools"
+  logs_dir: "logs"
+  tasks_file: "tasks.yaml"
+
+readme:
+  auto_update: true
+  max_recent_tools: 20
