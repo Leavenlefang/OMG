@@ -1,0 +1,42 @@
+# ─────────────────────────────────────────────
+# Personal Business OS — Configuration
+# Fill in credentials as you get them.
+# All platforms default to mock: true until configured.
+# ─────────────────────────────────────────────
+
+# LINE Notify token (get it from https://notify-bot.line.me/)
+line_notify:
+  token: ""    # ← paste your token here
+
+platforms:
+
+  ichef:
+    mock: true
+    # When you're ready, set mock: false and choose ONE option:
+    #
+    # Option A — point to your iChef CSV export folder:
+    # csv_dir: "/Users/yourname/Downloads/ichef_reports"
+    #
+    # Option B — web login (coming soon):
+    # username: ""
+    # password: ""
+
+  ubereats:
+    mock: true
+    # When you're ready, set mock: false and fill in:
+    # client_id: ""
+    # client_secret: ""
+    # store_id: ""
+
+  shopee:
+    mock: true
+    # When you're ready, set mock: false and fill in:
+    # partner_id: 0
+    # shop_id: 0
+    # partner_key: ""
+
+  easystore:
+    mock: true
+    # When you're ready, set mock: false and fill in:
+    # access_token: ""
+    # store_id: ""

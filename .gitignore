@@ -2,3 +2,6 @@
 __pycache__/
 *.pyc
 logs/cron.log
+biz/data/*.db
+biz/data/*.log
+biz/config.yaml
