@@ -1,0 +1,108 @@
+alerts:
+  slow_day:
+    description: Revenue below threshold by afternoon
+    condition: revenue_below
+    threshold: 3000
+    by_hour: 15
+    severity: red
+    message: 🔴 只剩 {hours_left}h，今日營收 NT${revenue:,.0f} 偏低
+  great_day:
+    description: Exceptional revenue day
+    condition: revenue_above
+    threshold: 20000
+    severity: celebrate
+    message: 🎉 今日營收破 NT$20,000！
+  shopee_unshipped:
+    description: Too many orders waiting to ship
+    condition: pending_count_above
+    platform: Shopee
+    keyword: ship
+    threshold: 5
+    severity: yellow
+    message: ⚡ Shopee 有 {count} 筆待出貨
+  platform_silent:
+    description: Platform has no orders during peak hours
+    condition: zero_orders_during_peak
+    peak_hours:
+    - - 11
+      - 13
+    - - 17
+      - 19
+    severity: yellow
+    message: ⚠️ {platform} 尖峰時段無訂單，請確認平台狀態
+exclusion_rules:
+- id: EX1
+  name: Refund or negative amount
+  condition: revenue_negative
+  message: 退款/負金額，需人工確認
+  severity: red
+- id: EX2
+  name: Single large order
+  condition: single_order_above
+  threshold: 3000
+  message: 單筆訂單超過 NT$3,000，請確認
+  severity: yellow
+- id: EX3
+  name: Platform API error
+  condition: has_error
+  message: 平台 API 連線失敗，資料可能不完整
+  severity: red
+- id: EX4
+  name: Revenue drop vs last week
+  condition: revenue_drop_vs_last_week
+  threshold_pct: 50
+  message: 較上週同日下降 {pct:.0f}%，請確認
+  severity: yellow
+- id: EX5
+  name: Zero orders during peak
+  condition: zero_orders_during_peak
+  peak_hours:
+  - - 11
+    - 13
+  - - 17
+    - 19
+  message: 尖峰時段零訂單 ({platform})
+  severity: yellow
+- id: EX6
+  name: Platform discrepancy
+  condition: one_platform_silent_others_active
+  message: '{platform} 無訂單，但其他平台正常，請檢查帳號狀態'
+  severity: yellow
+- id: EX7
+  name: First-time bulk order
+  condition: keyword_in_pending
+  keywords:
+  - bulk
+  - 批量
+  - 大量
+  - wholesale
+  message: 疑似大量新客訂單，請確認後出貨
+  severity: yellow
+message_rules:
+  auto_reply_allowed:
+  - opening hours
+  - 幾點
+  - 幾點開
+  - 菜單
+  - 價格
+  - order status
+  - 訂單狀態
+  always_escalate_keywords:
+  - 退款
+  - 客訴
+  - 過敏
+  - allergy
+  - complaint
+  - refund
+  - 食物問題
+  - bad
+  - terrible
+  tone:
+    language: match_customer
+    style: warm_casual
+    sign_off: OMG Coffee ☕
+corrections:
+- date: '2026-03-23'
+  description: Uber Eats promotions should not count as negative revenue, ignore items
+    with type=promotion_discount
+  rule_added: pending manual rule update

@@ -1,0 +1,65 @@
+{
+  "_comment": "MCP (Model Context Protocol) server configuration for Claude Code.",
+  "_comment2": "Place this file at: ~/.claude/mcp_servers.json (or merge into existing)",
+  "_docs": "https://docs.anthropic.com/en/docs/claude-code/mcp",
+
+  "mcpServers": {
+
+    "line": {
+      "_status": "planned",
+      "_description": "Read LINE messages and send replies via LINE Messaging API",
+      "command": "npx",
+      "args": ["-y", "@anthropic/mcp-server-line"],
+      "env": {
+        "LINE_CHANNEL_ACCESS_TOKEN": "${LINE_CHANNEL_ACCESS_TOKEN}",
+        "LINE_CHANNEL_SECRET": "${LINE_CHANNEL_SECRET}"
+      }
+    },
+
+    "google-calendar": {
+      "_status": "planned",
+      "_description": "Read schedule, block time, add events for deliveries/meetings",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-google-calendar"],
+      "env": {
+        "GOOGLE_CLIENT_ID":     "${GOOGLE_CLIENT_ID}",
+        "GOOGLE_CLIENT_SECRET": "${GOOGLE_CLIENT_SECRET}",
+        "GOOGLE_REFRESH_TOKEN": "${GOOGLE_REFRESH_TOKEN}"
+      }
+    },
+
+    "notion": {
+      "_status": "planned",
+      "_description": "Log decisions, store SOPs, update business wiki",
+      "command": "npx",
+      "args": ["-y", "@anthropic/mcp-server-notion"],
+      "env": {
+        "NOTION_API_KEY": "${NOTION_API_KEY}",
+        "NOTION_DATABASE_ID": "${NOTION_DATABASE_ID}"
+      }
+    },
+
+    "filesystem": {
+      "_status": "active",
+      "_description": "Read/write local files in this repo",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/home/user/OMG"
+      ]
+    },
+
+    "sqlite": {
+      "_status": "active",
+      "_description": "Direct SQL queries on the income database",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sqlite",
+        "/home/user/OMG/biz/data/income.db"
+      ]
+    }
+
+  }
+}

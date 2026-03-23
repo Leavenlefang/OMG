@@ -35,16 +35,18 @@ def main():
     do_fetch = not brief_only
     do_send  = not fetch_only
 
+    summaries = None
+
     if do_fetch:
         print("📡 Fetching income data...")
-        aggregator.run()
+        summaries = aggregator.run()
         print()
 
     if do_send:
         if preview:
-            print(generator.build())
+            print(generator.build(summaries=summaries))
         else:
-            generator.send_brief()
+            generator.send_brief(summaries=summaries)
 
 
 if __name__ == "__main__":
