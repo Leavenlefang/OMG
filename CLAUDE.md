@@ -105,7 +105,7 @@ They appear as ⚠️ in the daily brief.
 - **Daily brief**: 07:00 every morning → sent to LINE
 - **Income fetch**: 06:55 (5 min before brief generation)
 - **Shopee ship reminder**: 14:00 if unshipped orders > 0
-- **End-of-day summary**: 21:30 (after closing)
+- **End-of-day summary**: 21:00 (after closing)
 
 ---
 

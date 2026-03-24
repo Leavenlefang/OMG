@@ -166,6 +166,80 @@ def build(summaries: list = None) -> str:
     return "\n".join(lines)
 
 
+def build_eod() -> str:
+    today     = date.today()
+    yesterday = today - timedelta(days=1)
+
+    today_totals     = storage.get_today_totals()
+    yesterday_totals = storage.get_yesterday_totals()
+    top_items        = storage.get_top_items_today()
+    today_rows       = storage.get_day(today)
+    unresolved       = rules_engine.load_review_queue()
+
+    total_rev = today_totals["revenue"]
+    total_ord = today_totals["orders"]
+    yest_rev  = yesterday_totals["revenue"]
+
+    lines = []
+
+    # ── Header ──
+    great_day = total_rev >= 20000
+    header_icon = "🎉" if great_day else "🌙"
+    lines.append(f"\n{header_icon} {today.strftime('%m/%d')} 收攤囉！")
+    lines.append("━━━━━━━━━━━━━━━━━━━")
+
+    if great_day:
+        lines.append("今天超棒！慶祝一下 🎊")
+        lines.append("")
+
+    # ── Day total ──
+    delta = _delta(total_rev, yest_rev)
+    lines.append(f"💰 今日總營收：{_fmt(total_rev)}{delta}")
+    lines.append(f"📦 今日訂單：{total_ord} 筆")
+    lines.append("")
+
+    # ── Per-platform breakdown ──
+    lines.append("📊 各平台結算：")
+    for row in today_rows:
+        icon = PLATFORM_ICONS.get(row["platform"], "•")
+        if row.get("error"):
+            lines.append(f"  {icon} {row['platform']}: ❌ 連線失敗")
+        else:
+            mock_tag = " [模擬]" if row.get("is_mock") else ""
+            lines.append(
+                f"  {icon} {row['platform']}: {_fmt(row['revenue'])} / {row['orders']} 筆{mock_tag}"
+            )
+
+    # ── Top items ──
+    if top_items:
+        lines.append("")
+        lines.append("🏆 今日熱銷前三：")
+        for item in top_items[:3]:
+            lines.append(f"  • {item['name']} × {item['qty']}")
+
+    # ── Unresolved review queue ──
+    if unresolved:
+        lines.append("")
+        lines.append(f"📋 尚未處理 ({len(unresolved)} 項)：")
+        for item in unresolved[:3]:
+            icon = PLATFORM_ICONS.get(item.get("platform", ""), "•")
+            lines.append(f"  {icon} {item['message']}")
+        if len(unresolved) > 3:
+            lines.append(f"  … 還有 {len(unresolved) - 3} 項")
+
+    # ── Slow day alert ──
+    if total_rev < 3000:
+        lines.append("")
+        lines.append("🔴 今天營收偏低，明天加油！")
+
+    # ── Footer ──
+    lines.append("")
+    lines.append("━━━━━━━━━━━━━━━━━━━")
+    lines.append("明天見！OMG Coffee ☕")
+
+    return "\n".join(lines)
+
+
 def send_brief(summaries: list = None):
     config = _load_config()
     token  = config.get("line_notify", {}).get("token", "")
@@ -182,3 +256,21 @@ def send_brief(summaries: list = None):
     from . import line_notify
     line_notify.send(token, message)
     print("✅ Sent to LINE.")
+
+
+def send_eod():
+    config = _load_config()
+    token  = config.get("line_notify", {}).get("token", "")
+
+    message = build_eod()
+    print(message)
+    print()
+
+    if not token:
+        print("⚠️  LINE Notify token not set. Message printed above only.")
+        print("   Add it to config.yaml → line_notify.token")
+        return
+
+    from . import line_notify
+    line_notify.send(token, message)
+    print("✅ EOD summary sent to LINE.")

@@ -7,6 +7,7 @@ Usage:
   python3 run_daily.py --fetch   # fetch & store only (no LINE)
   python3 run_daily.py --brief   # generate brief from stored data (no fetch)
   python3 run_daily.py --preview # print brief without sending to LINE
+  python3 run_daily.py --eod     # send end-of-day summary to LINE
 """
 
 import argparse
@@ -25,7 +26,14 @@ def main():
     parser.add_argument("--fetch",   action="store_true", help="Fetch & store income data only")
     parser.add_argument("--brief",   action="store_true", help="Generate & send brief from stored data")
     parser.add_argument("--preview", action="store_true", help="Print brief without sending to LINE")
+    parser.add_argument("--eod",     action="store_true", help="Send end-of-day summary to LINE")
     args = parser.parse_args()
+
+    # End-of-day summary — standalone, no fetch needed
+    if args.eod:
+        print("🌙 Sending end-of-day summary...")
+        generator.send_eod()
+        return
 
     fetch_only  = args.fetch
     brief_only  = args.brief
