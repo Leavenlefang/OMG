@@ -1,0 +1,176 @@
+# OMG Coffee — Master Menu
+# Single source of truth. All platform menus are generated from this file.
+# Never edit individual platform menus directly.
+#
+# Fields:
+#   id:              unique item identifier
+#   name_zh:         Chinese display name
+#   name_en:         English display name
+#   category:        drink | food | merchandise | subscription
+#   base_price:      price in TWD (NT$)
+#   in_stock:        true/false — disables on all platforms when false
+#   available_from:  (optional) YYYY-MM-DD seasonal start
+#   available_until: (optional) YYYY-MM-DD seasonal end
+#   platforms:       list of platforms to publish to
+#   options:         size/add-on variants with price deltas
+#   tags:            for filtering (signature, seasonal, new, popular)
+
+categories:
+  - id: drink
+    name_zh: 飲品
+    name_en: Drinks
+  - id: food
+    name_zh: 輕食
+    name_en: Food
+  - id: merchandise
+    name_zh: 周邊商品
+    name_en: Merchandise
+  - id: subscription
+    name_zh: 訂閱方案
+    name_en: Subscriptions
+
+items:
+  # ── Signature Drinks ──
+  - id: omg-latte
+    name_zh: OMG 拿鐵
+    name_en: OMG Latte
+    category: drink
+    base_price: 150
+    in_stock: true
+    platforms: [iChef, Uber Eats, Shopee, EasyStore]
+    options:
+      - name: 中杯
+        name_en: Medium
+        price_delta: 0
+      - name: 大杯
+        name_en: Large
+        price_delta: 20
+    tags: [signature, popular]
+
+  - id: omg-americano
+    name_zh: OMG 美式
+    name_en: OMG Americano
+    category: drink
+    base_price: 120
+    in_stock: true
+    platforms: [iChef, Uber Eats, Shopee, EasyStore]
+    options:
+      - name: 中杯
+        name_en: Medium
+        price_delta: 0
+      - name: 大杯
+        name_en: Large
+        price_delta: 20
+    tags: [signature]
+
+  - id: omg-cappuccino
+    name_zh: OMG 卡布奇諾
+    name_en: OMG Cappuccino
+    category: drink
+    base_price: 150
+    in_stock: true
+    platforms: [iChef, Uber Eats]
+    options:
+      - name: 中杯
+        name_en: Medium
+        price_delta: 0
+      - name: 大杯
+        name_en: Large
+        price_delta: 20
+    tags: [signature]
+
+  - id: cold-brew
+    name_zh: 冷萃咖啡
+    name_en: Cold Brew
+    category: drink
+    base_price: 160
+    in_stock: true
+    platforms: [iChef, Uber Eats, Shopee, EasyStore]
+    tags: [popular]
+
+  - id: matcha-latte
+    name_zh: 抹茶拿鐵
+    name_en: Matcha Latte
+    category: drink
+    base_price: 170
+    in_stock: true
+    platforms: [iChef, Uber Eats]
+    tags: []
+
+  - id: oat-latte
+    name_zh: 燕麥奶拿鐵
+    name_en: Oat Milk Latte
+    category: drink
+    base_price: 170
+    in_stock: true
+    platforms: [iChef, Uber Eats, Shopee]
+    tags: [popular]
+
+  # ── Seasonal ──
+  - id: sakura-latte
+    name_zh: 櫻花拿鐵
+    name_en: Sakura Latte
+    category: drink
+    base_price: 180
+    in_stock: true
+    available_from: "2026-03-01"
+    available_until: "2026-04-30"
+    platforms: [iChef, Uber Eats]
+    tags: [seasonal, new]
+
+  # ── Food ──
+  - id: croissant
+    name_zh: 可頌
+    name_en: Croissant
+    category: food
+    base_price: 80
+    in_stock: true
+    platforms: [iChef, Uber Eats]
+    tags: [popular]
+
+  - id: banana-bread
+    name_zh: 香蕉蛋糕
+    name_en: Banana Bread
+    category: food
+    base_price: 90
+    in_stock: true
+    platforms: [iChef, Uber Eats]
+    tags: []
+
+  # ── Merchandise (e-commerce only) ──
+  - id: drip-bag-10
+    name_zh: OMG 濾掛咖啡 10入
+    name_en: OMG Drip Bag (10-pack)
+    category: merchandise
+    base_price: 350
+    in_stock: true
+    platforms: [Shopee, EasyStore]
+    tags: [popular]
+
+  - id: drip-bag-30
+    name_zh: OMG 濾掛咖啡 30入
+    name_en: OMG Drip Bag (30-pack)
+    category: merchandise
+    base_price: 900
+    in_stock: true
+    platforms: [Shopee, EasyStore]
+    tags: []
+
+  - id: coffee-beans-half
+    name_zh: OMG 咖啡豆 半磅
+    name_en: OMG Coffee Beans (half lb)
+    category: merchandise
+    base_price: 450
+    in_stock: true
+    platforms: [Shopee, EasyStore]
+    tags: [signature]
+
+  # ── Subscriptions (EasyStore only) ──
+  - id: monthly-drip-sub
+    name_zh: 每月濾掛訂閱 (10入/月)
+    name_en: Monthly Drip Bag Subscription
+    category: subscription
+    base_price: 300
+    in_stock: true
+    platforms: [EasyStore]
+    tags: [subscription]
