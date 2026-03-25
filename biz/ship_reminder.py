@@ -97,15 +97,18 @@ def main():
     print(message)
     print()
 
-    config = _load_config()
-    token = config.get("line_notify", {}).get("token", "")
+    config        = _load_config()
+    line_cfg      = config.get("line", {})
+    channel_token = line_cfg.get("channel_token", "")
+    user_id       = line_cfg.get("user_id", "")
 
-    if not token:
-        print("⚠️  LINE Notify token not set. Message printed above only.")
+    if not channel_token or not user_id:
+        print("⚠️  LINE not configured. Message printed above only.")
+        print("   See biz/setup/LINE_MESSAGING.md for setup steps.")
         return
 
-    from biz.brief import line_notify
-    line_notify.send(token, message)
+    from biz.brief import line_client
+    line_client.send(channel_token, user_id, message)
     print("✅ Ship reminder sent to LINE.")
 
 

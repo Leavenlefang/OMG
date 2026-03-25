@@ -240,37 +240,37 @@ def build_eod() -> str:
     return "\n".join(lines)
 
 
-def send_brief(summaries: list = None):
-    config = _load_config()
-    token  = config.get("line_notify", {}).get("token", "")
+def _line_send(message: str) -> bool:
+    """Send a message via LINE Messaging API. Returns True if sent, False if not configured."""
+    config        = _load_config()
+    line_cfg      = config.get("line", {})
+    channel_token = line_cfg.get("channel_token", "")
+    user_id       = line_cfg.get("user_id", "")
 
+    if not channel_token or not user_id:
+        print("⚠️  LINE not configured. Message printed above only.")
+        print("   Add channel_token + user_id to config.yaml → line")
+        print("   See biz/setup/LINE_MESSAGING.md for setup steps.")
+        return False
+
+    from . import line_client
+    line_client.send(channel_token, user_id, message)
+    return True
+
+
+def send_brief(summaries: list = None):
     message = build(summaries=summaries)
     print(message)
     print()
 
-    if not token:
-        print("⚠️  LINE Notify token not set. Message printed above only.")
-        print("   Add it to config.yaml → line_notify.token")
-        return
-
-    from . import line_notify
-    line_notify.send(token, message)
-    print("✅ Sent to LINE.")
+    if _line_send(message):
+        print("✅ Sent to LINE.")
 
 
 def send_eod():
-    config = _load_config()
-    token  = config.get("line_notify", {}).get("token", "")
-
     message = build_eod()
     print(message)
     print()
 
-    if not token:
-        print("⚠️  LINE Notify token not set. Message printed above only.")
-        print("   Add it to config.yaml → line_notify.token")
-        return
-
-    from . import line_notify
-    line_notify.send(token, message)
-    print("✅ EOD summary sent to LINE.")
+    if _line_send(message):
+        print("✅ EOD summary sent to LINE.")
